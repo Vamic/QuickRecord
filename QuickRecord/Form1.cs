@@ -19,13 +19,16 @@ namespace QuickRecord
         NAudio.Wave.WaveFileWriter waveWriter;
         Hotkeys.GlobalHotkey ghk;
         bool recording;
-        string pathend;
+        string pathend, hotkeystring;
         Timer timer;
 
+        Keys modifierKeys, pressedKey;
         public Form1()
         {
             InitializeComponent();
-            ghk = new GlobalHotkey(6, Keys.D6, this);
+            modifierKeys = Keys.Shift ^ Keys.Control;
+            pressedKey = Keys.D6;
+            ghk = new GlobalHotkey(Constants.ToInt(modifierKeys), pressedKey, this);
             ghk.Register();
             timer = new Timer();
             timer.Interval = 120000; //max recording of 120000ms (2 minutes) just in case, should be changable maybe
@@ -111,15 +114,22 @@ namespace QuickRecord
             if (btnChangeKeys.Text == "Change")
             {
                 hotkeyTextBox.Text = "";
-                hotkeyTextBox.SelectAll();
+                hotkeyTextBox.Select();
                 btnChangeKeys.Text = "Save";
             }
             else
             {
                 if (hotkeyTextBox.Text == "")
                 {
-                    hotkeyTextBox.Text = "Ctrl+Shift+6";
+                    hotkeyTextBox.Text = hotkeystring;
                 }
+                else
+                {
+                    ghk.Unregister();
+                    ghk = new GlobalHotkey(Constants.ToInt(modifierKeys), pressedKey, this);
+                    ghk.Register();
+                }
+                hotkeystring = hotkeyTextBox.Text;
                 btnChangeKeys.Text = "Change";
             }
         }
@@ -128,18 +138,24 @@ namespace QuickRecord
         {
             if (btnChangeKeys.Text != "Change")
             {
-                Keys modifierKeys = e.Modifiers;
-
-                Keys pressedKey = e.KeyData ^ modifierKeys ^ Keys.ShiftKey;
-
-                if (modifierKeys != Keys.None && pressedKey != Keys.None)
+                //Get modifier keys
+                Keys tmodifierKeys = e.Modifiers;
+                //Get the other key
+                Keys tpressedKey = e.KeyData ^ tmodifierKeys;
+                if (tmodifierKeys != Keys.None && tpressedKey != Keys.None)
                 {
-                    if (pressedKey != Keys.LButton && pressedKey != Keys.RButton)
+                    //ignore the modifier keys
+                    if (tpressedKey != Keys.Menu
+                        && tpressedKey != Keys.ShiftKey
+                        && tpressedKey != Keys.ControlKey)
                     {
-                        var converter = new KeysConverter();
-                        hotkeyTextBox.Text = converter.ConvertToString(e.KeyData);
+                        //show the user his key inputs
+                        hotkeyTextBox.Text = new KeysConverter().ConvertToString(e.KeyData);
+                        modifierKeys = tmodifierKeys;
+                        pressedKey = tpressedKey;
                     }
                 }
+                
             }
         }
 

@@ -56,6 +56,26 @@ namespace Hotkeys
 
         //windows message id for hotkey
         public const int WM_HOTKEY_MSG_ID = 0x0312;
+
+        internal static int ToInt(Keys modifier)
+        {
+            if (modifier == Keys.Shift)
+                return SHIFT;
+            else if (modifier == Keys.Control)
+                return CTRL;
+            else if (modifier == Keys.Alt)
+                return ALT;
+            else if (modifier == (Keys.Control | Keys.Shift))
+                return CTRL + SHIFT;
+            else if (modifier == (Keys.Control | Keys.Alt))
+                return CTRL + ALT;
+            else if (modifier == (Keys.Alt | Keys.Shift))
+                return ALT + SHIFT;
+            else if (modifier == (Keys.Alt | Keys.Shift | Keys.Control))
+                return ALT + SHIFT + CTRL;
+            else
+                return NOMOD;
+        }
     }
 
 }
