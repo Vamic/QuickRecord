@@ -159,6 +159,10 @@ namespace QuickRecord
             }
         }
 
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            timer.Interval = (int)numericUpDown2.Value*1000;
+        }
         #region Boring Shit
 
         private void Form1_Resize(object sender, System.EventArgs e)

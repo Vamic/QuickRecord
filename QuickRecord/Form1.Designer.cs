@@ -66,7 +66,7 @@
             // 
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "QuickRecord v1.1";
+            this.notifyIcon.Text = "QuickRecord v1.2";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
@@ -182,10 +182,14 @@
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Enabled = false;
             this.numericUpDown2.Location = new System.Drawing.Point(110, 130);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             1000,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            10,
             0,
             0,
             0});
@@ -197,6 +201,7 @@
             0,
             0,
             0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // showNotifications
             // 
