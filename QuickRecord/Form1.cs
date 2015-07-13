@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using NAudio;
 using Hotkeys;
 
@@ -22,29 +23,53 @@ namespace QuickRecord
         string pathend, hotkeystring;
         Timer timer;
 
-        Keys modifierKeys, pressedKey;
+        Keys modifierKeys;
+        Keys pressedKey;
         public Form1()
         {
             InitializeComponent();
-            modifierKeys = Keys.Shift ^ Keys.Control;
-            pressedKey = Keys.D6;
-            ghk = new GlobalHotkey(Constants.ToInt(modifierKeys), pressedKey, this);
-            ghk.Register();
-            timer = new Timer();
-            timer.Interval = 120000; //max recording of 120000ms (2 minutes) just in case, should be changable maybe
+
+            timer = new Timer(); //a timer for stopping recording at a certain time
+            timer.Interval = 120000; //max recording of 120000ms (2 minutes)
             timer.Tick += new EventHandler(timer_Tick);
 
+            if (Properties.Settings.Default.modifierKeys == Keys.None)
+            {
+                modifierKeys = Keys.Shift ^ Keys.Control;
+                pressedKey = Keys.D6;
+                folderLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                SaveSettings();
+            }
+            else
+            {
+                modifierKeys = Properties.Settings.Default.modifierKeys;
+                pressedKey = Properties.Settings.Default.pressedKey;
+                maxRecordLength.Value = Properties.Settings.Default.maxRecordLength;
+                showNotifications.Checked = Properties.Settings.Default.showNotifications;
+                folderLocation.Text = Properties.Settings.Default.folderLocation;
+            }
+            ghk = new GlobalHotkey(Constants.ToInt(modifierKeys), pressedKey, this);
+            ghk.Register();
+
+            hotkeyTextBox.Text = new KeysConverter().ConvertToString(modifierKeys ^ pressedKey);
 
             pathend = "QuickRecording" + ".wav";
-
 
             notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
             notifyIcon.BalloonTipTitle = "QuickRecord";
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void SaveSettings()
         {
-            folderLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            Properties.Settings.Default.modifierKeys = modifierKeys;
+            Properties.Settings.Default.pressedKey = pressedKey;
+
+            Properties.Settings.Default.showNotifications = showNotifications.Checked;
+            Properties.Settings.Default.maxRecordLength = maxRecordLength.Value;
+
+            Properties.Settings.Default.folderLocation = folderLocation.Text;
+
+            Properties.Settings.Default.Save();
         }
 
         private void HandleHotkey()
@@ -53,7 +78,7 @@ namespace QuickRecord
             {
                 sourceStream = new NAudio.Wave.WasapiLoopbackCapture();
                 sourceStream.DataAvailable += new EventHandler<NAudio.Wave.WaveInEventArgs>(sourceStream_DataAvailable);
-                string pathstart = folderLocation.Text + "\\" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+                string pathstart = folderLocation.Text + "\\" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss ");
                 waveWriter = new NAudio.Wave.WaveFileWriter(pathstart+pathend, sourceStream.WaveFormat);
 
                 sourceStream.StartRecording();
@@ -99,7 +124,7 @@ namespace QuickRecord
             }
             base.WndProc(ref m);
         }
-
+        
         private void sourceStream_DataAvailable(object sender, NAudio.Wave.WaveInEventArgs e)
         {
             if (waveWriter == null)
@@ -131,6 +156,8 @@ namespace QuickRecord
                 }
                 hotkeystring = hotkeyTextBox.Text;
                 btnChangeKeys.Text = "Change";
+
+                SaveSettings();
             }
         }
 
@@ -159,11 +186,36 @@ namespace QuickRecord
             }
         }
 
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        private void Shutdown()
         {
-            timer.Interval = (int)numericUpDown2.Value*1000;
+            SaveSettings();
+
+            ghk.Unregister();
+
+            if (sourceStream != null)
+            {
+                sourceStream.StopRecording();
+                sourceStream.Dispose();
+            }
+            if (waveWriter != null)
+            {
+                waveWriter.Dispose();
+            }
+
+            Environment.Exit(0);
         }
         #region Boring Shit
+
+
+        private void menuExit_Click(object sender, EventArgs e)
+        {
+            Shutdown();
+        }
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            timer.Interval = (int)maxRecordLength.Value*1000;
+            SaveSettings();
+        }
 
         private void Form1_Resize(object sender, System.EventArgs e)
         {
@@ -193,32 +245,13 @@ namespace QuickRecord
             WindowState = FormWindowState.Normal;
         }
 
-        private void menuExit_Click(object sender, EventArgs e)
-        {
-            Shutdown();
-        }
-
-        private void Shutdown()
-        {
-            ghk.Unregister();
-
-            if (sourceStream != null)
-            {
-                sourceStream.StopRecording();
-                sourceStream.Dispose();
-            }
-            if (waveWriter != null)
-            {
-                waveWriter.Dispose();
-            }
-
-            Environment.Exit(0);
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
                 folderLocation.Text = folderBrowserDialog1.SelectedPath;
+                SaveSettings();
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

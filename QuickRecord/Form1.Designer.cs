@@ -44,12 +44,13 @@
             this.browseButton = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.maxRecordLength = new System.Windows.Forms.NumericUpDown();
             this.showNotifications = new System.Windows.Forms.CheckBox();
             this.openFolderButton = new System.Windows.Forms.Button();
+            this.debugLabel = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRecordLength)).BeginInit();
             this.SuspendLayout();
             // 
             // btnChangeKeys
@@ -66,7 +67,7 @@
             // 
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "QuickRecord v1.2";
+            this.notifyIcon.Text = "QuickRecord v1.3";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
@@ -180,28 +181,28 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "Max record length";
             // 
-            // numericUpDown2
+            // maxRecordLength
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(110, 130);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.maxRecordLength.Location = new System.Drawing.Point(110, 130);
+            this.maxRecordLength.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
+            this.maxRecordLength.Minimum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDown2.TabIndex = 9;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.maxRecordLength.Name = "maxRecordLength";
+            this.maxRecordLength.Size = new System.Drawing.Size(54, 20);
+            this.maxRecordLength.TabIndex = 9;
+            this.maxRecordLength.Value = new decimal(new int[] {
             120,
             0,
             0,
             0});
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            this.maxRecordLength.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // showNotifications
             // 
@@ -225,14 +226,23 @@
             this.openFolderButton.UseVisualStyleBackColor = true;
             this.openFolderButton.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // debugLabel
+            // 
+            this.debugLabel.AutoSize = true;
+            this.debugLabel.Location = new System.Drawing.Point(176, 154);
+            this.debugLabel.Name = "debugLabel";
+            this.debugLabel.Size = new System.Drawing.Size(0, 13);
+            this.debugLabel.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 177);
+            this.Controls.Add(this.debugLabel);
             this.Controls.Add(this.openFolderButton);
             this.Controls.Add(this.showNotifications);
-            this.Controls.Add(this.numericUpDown2);
+            this.Controls.Add(this.maxRecordLength);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.browseButton);
@@ -246,10 +256,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Settings";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxRecordLength)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,9 +280,10 @@
         private System.Windows.Forms.Button browseButton;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown maxRecordLength;
         private System.Windows.Forms.CheckBox showNotifications;
         private System.Windows.Forms.Button openFolderButton;
+        private System.Windows.Forms.Label debugLabel;
     }
 }
 
