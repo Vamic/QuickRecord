@@ -82,5 +82,17 @@ namespace QuickRecord.Properties {
                 this["folderLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool recordToMp3 {
+            get {
+                return ((bool)(this["recordToMp3"]));
+            }
+            set {
+                this["recordToMp3"] = value;
+            }
+        }
     }
 }

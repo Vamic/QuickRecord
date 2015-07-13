@@ -46,8 +46,11 @@ namespace QuickRecord
             {
                 modifierKeys = Properties.Settings.Default.modifierKeys;
                 pressedKey = Properties.Settings.Default.pressedKey;
+
                 maxRecordLength.Value = Properties.Settings.Default.maxRecordLength;
                 showNotifications.Checked = Properties.Settings.Default.showNotifications;
+                recordToMp3.Checked = Properties.Settings.Default.recordToMp3;
+
                 folderLocation.Text = Properties.Settings.Default.folderLocation;
             }
             ghk = new GlobalHotkey(Constants.ToInt(modifierKeys), pressedKey, this);
@@ -65,6 +68,7 @@ namespace QuickRecord
             Properties.Settings.Default.pressedKey = pressedKey;
 
             Properties.Settings.Default.showNotifications = showNotifications.Checked;
+            Properties.Settings.Default.recordToMp3 = recordToMp3.Checked;
             Properties.Settings.Default.maxRecordLength = maxRecordLength.Value;
 
             Properties.Settings.Default.folderLocation = folderLocation.Text;
@@ -79,7 +83,7 @@ namespace QuickRecord
                 sourceStream = new NAudio.Wave.WasapiLoopbackCapture();
                 sourceStream.DataAvailable += new EventHandler<NAudio.Wave.WaveInEventArgs>(sourceStream_DataAvailable);
                 string pathstart = folderLocation.Text + "\\" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss ") + "QuickRecording";
-                if (recordInMp3.Checked)
+                if (recordToMp3.Checked)
                     mp3Writer = new NAudio.Lame.LameMP3FileWriter(pathstart + ".mp3", sourceStream.WaveFormat, 128);
                 else
                     waveWriter = new NAudio.Wave.WaveFileWriter(pathstart + ".wav", sourceStream.WaveFormat);
@@ -133,7 +137,7 @@ namespace QuickRecord
         
         private void sourceStream_DataAvailable(object sender, NAudio.Wave.WaveInEventArgs e)
         {
-            if (recordInMp3.Checked)
+            if (recordToMp3.Checked)
             {
                 if (mp3Writer == null || !mp3Writer.CanWrite)
                     return;

@@ -48,7 +48,7 @@
             this.showNotifications = new System.Windows.Forms.CheckBox();
             this.openFolderButton = new System.Windows.Forms.Button();
             this.debugLabel = new System.Windows.Forms.Label();
-            this.recordInMp3 = new System.Windows.Forms.CheckBox();
+            this.recordToMp3 = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRecordLength)).BeginInit();
@@ -235,24 +235,24 @@
             this.debugLabel.Size = new System.Drawing.Size(0, 13);
             this.debugLabel.TabIndex = 12;
             // 
-            // recordInMp3
+            // recordToMp3
             // 
-            this.recordInMp3.AutoSize = true;
-            this.recordInMp3.Checked = true;
-            this.recordInMp3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.recordInMp3.Location = new System.Drawing.Point(11, 176);
-            this.recordInMp3.Name = "recordInMp3";
-            this.recordInMp3.Size = new System.Drawing.Size(96, 17);
-            this.recordInMp3.TabIndex = 13;
-            this.recordInMp3.Text = "Record to mp3";
-            this.recordInMp3.UseVisualStyleBackColor = true;
+            this.recordToMp3.AutoSize = true;
+            this.recordToMp3.Checked = true;
+            this.recordToMp3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.recordToMp3.Location = new System.Drawing.Point(11, 176);
+            this.recordToMp3.Name = "recordToMp3";
+            this.recordToMp3.Size = new System.Drawing.Size(96, 17);
+            this.recordToMp3.TabIndex = 13;
+            this.recordToMp3.Text = "Record to mp3";
+            this.recordToMp3.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 201);
-            this.Controls.Add(this.recordInMp3);
+            this.Controls.Add(this.recordToMp3);
             this.Controls.Add(this.debugLabel);
             this.Controls.Add(this.openFolderButton);
             this.Controls.Add(this.showNotifications);
@@ -298,7 +298,7 @@
         private System.Windows.Forms.CheckBox showNotifications;
         private System.Windows.Forms.Button openFolderButton;
         private System.Windows.Forms.Label debugLabel;
-        private System.Windows.Forms.CheckBox recordInMp3;
+        private System.Windows.Forms.CheckBox recordToMp3;
     }
 }
 
