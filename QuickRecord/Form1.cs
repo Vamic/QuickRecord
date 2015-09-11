@@ -11,6 +11,7 @@ using System.IO;
 using NAudio.Wave;
 using NAudio.Lame;
 using Hotkeys;
+using System.Globalization;
 
 namespace QuickRecord
 {
@@ -30,13 +31,15 @@ namespace QuickRecord
         public Form1()
         {
             InitializeComponent();
-
+            
             timer = new Timer(); //a timer for stopping recording at a certain time
             timer.Interval = 120000; //max recording of 120000ms (2 minutes)
             timer.Tick += new EventHandler(timer_Tick);
 
-            if (Properties.Settings.Default.modifierKeys == Keys.None)
+            //if untouched, set default values
+            if (Properties.Settings.Default.unTouched)
             {
+                Properties.Settings.Default.unTouched = false;
                 modifierKeys = Keys.Shift ^ Keys.Control;
                 pressedKey = Keys.D6;
                 folderLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -52,6 +55,9 @@ namespace QuickRecord
                 recordToMp3.Checked = Properties.Settings.Default.recordToMp3;
 
                 folderLocation.Text = Properties.Settings.Default.folderLocation;
+
+                saveFormat.Text = Properties.Settings.Default.saveFormat;
+                incrementNumber.Value = Properties.Settings.Default.incrementNumber;
             }
             ghk = new GlobalHotkey(Constants.ToInt(modifierKeys), pressedKey, this);
             ghk.Register();
@@ -72,6 +78,9 @@ namespace QuickRecord
             Properties.Settings.Default.maxRecordLength = maxRecordLength.Value;
 
             Properties.Settings.Default.folderLocation = folderLocation.Text;
+            
+            Properties.Settings.Default.saveFormat = saveFormat.Text;
+            Properties.Settings.Default.incrementNumber = (int)incrementNumber.Value;
 
             Properties.Settings.Default.Save();
         }
@@ -82,12 +91,13 @@ namespace QuickRecord
             {
                 sourceStream = new NAudio.Wave.WasapiLoopbackCapture();
                 sourceStream.DataAvailable += new EventHandler<NAudio.Wave.WaveInEventArgs>(sourceStream_DataAvailable);
-                string pathstart = folderLocation.Text + "\\" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss ") + "QuickRecording";
+                string path = folderLocation.Text + "\\";
+                string filename = GetFileName();
                 if (recordToMp3.Checked)
-                    mp3Writer = new NAudio.Lame.LameMP3FileWriter(pathstart + ".mp3", sourceStream.WaveFormat, 128);
+                    mp3Writer = new NAudio.Lame.LameMP3FileWriter(path + filename + ".mp3", sourceStream.WaveFormat, 128);
                 else
-                    waveWriter = new NAudio.Wave.WaveFileWriter(pathstart + ".wav", sourceStream.WaveFormat);
-                    
+                    waveWriter = new NAudio.Wave.WaveFileWriter(path + filename+ ".wav", sourceStream.WaveFormat);
+                
                 sourceStream.StartRecording();
                 recording = true;
                 timer.Start();
@@ -101,6 +111,74 @@ namespace QuickRecord
             {
                 StopRecording();
             }
+        }
+
+        private string GetFileName()
+        {
+            string filename = "";
+            string format = saveFormat.Text;
+            DateTime dt = DateTime.Now;
+
+            //return default if format is empty
+            if (string.IsNullOrEmpty(format))
+            {
+                format = "%y-%mo-%d %h-%mi-%s QuickRecording";
+            }
+
+            //remove illegal characters
+            string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+
+            foreach (char c in invalid)
+            {
+                format = format.Replace(c.ToString(), "");
+            }
+
+            StringBuilder sb = new StringBuilder(format);
+            
+            sb.Replace("%mon2", CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(dt.Month))
+                .Replace("%mon", CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dt.Month))
+                .Replace("%yy", dt.ToString("yy"))
+                .Replace("%y", dt.Year.ToString())
+                .Replace("%mo", Helpers.AddZeroes(dt.Month))
+                .Replace("%d", Helpers.AddZeroes(dt.Day));
+
+            string hour;
+
+            if (sb.ToString().Contains("%pm"))
+            {
+                hour = Helpers.HourTo12(dt.Hour);
+            }
+            else
+            {
+                hour = Helpers.AddZeroes(dt.Hour);
+            }
+
+            sb.Replace("%h", hour)
+                .Replace("%mi", Helpers.AddZeroes(dt.Minute))
+                .Replace("%s", Helpers.AddZeroes(dt.Second))
+                .Replace("%ms", Helpers.AddZeroes(dt.Millisecond, 3))
+                .Replace("%w2", CultureInfo.InvariantCulture.DateTimeFormat.GetDayName(dt.DayOfWeek))
+                .Replace("%w", CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(dt.DayOfWeek))
+                .Replace("%pm", (dt.Hour >= 12 ? "PM" : "AM"));
+            
+            if (sb.ToString().Contains("%i"))
+            {
+                incrementNumber.Value++;
+                sb.Replace("%i", incrementNumber.Value.ToString());
+                sb.Replace("%i", incrementNumber.Value.ToString());
+            }
+
+            sb.Replace("%un", Environment.UserName);
+            sb.Replace("%uln", Environment.UserDomainName);
+            sb.Replace("%cn", Environment.MachineName);
+            
+            filename = sb.ToString();
+
+            if(Properties.Settings.Default.incrementNumber != incrementNumber.Value
+                    || Properties.Settings.Default.saveFormat != saveFormat.Text)
+                SaveSettings();
+
+            return filename;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -141,14 +219,13 @@ namespace QuickRecord
             {
                 if (mp3Writer == null || !mp3Writer.CanWrite)
                     return;
-
+                
                 mp3Writer.Write(e.Buffer, 0, e.BytesRecorded);
             }
             else
             {
                 if (waveWriter == null)
                     return;
-
                 waveWriter.Write(e.Buffer, 0, e.BytesRecorded);
                 waveWriter.Flush();
             }

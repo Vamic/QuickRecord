@@ -49,14 +49,26 @@
             this.openFolderButton = new System.Windows.Forms.Button();
             this.debugLabel = new System.Windows.Forms.Label();
             this.recordToMp3 = new System.Windows.Forms.CheckBox();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.incrementNumber = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.saveFormat = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRecordLength)).BeginInit();
+            this.tabControl.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.incrementNumber)).BeginInit();
             this.SuspendLayout();
             // 
             // btnChangeKeys
             // 
-            this.btnChangeKeys.Location = new System.Drawing.Point(179, 12);
+            this.btnChangeKeys.Location = new System.Drawing.Point(173, 4);
             this.btnChangeKeys.Name = "btnChangeKeys";
             this.btnChangeKeys.Size = new System.Drawing.Size(93, 22);
             this.btnChangeKeys.TabIndex = 0;
@@ -68,7 +80,7 @@
             // 
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "QuickRecord v1.4";
+            this.notifyIcon.Text = "QuickRecord v1.5";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
@@ -96,7 +108,7 @@
             // 
             // hotkeyTextBox
             // 
-            this.hotkeyTextBox.Location = new System.Drawing.Point(12, 14);
+            this.hotkeyTextBox.Location = new System.Drawing.Point(6, 6);
             this.hotkeyTextBox.Name = "hotkeyTextBox";
             this.hotkeyTextBox.ReadOnly = true;
             this.hotkeyTextBox.Size = new System.Drawing.Size(161, 20);
@@ -109,7 +121,7 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(12, 40);
+            this.radioButton1.Location = new System.Drawing.Point(6, 32);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(223, 17);
             this.radioButton1.TabIndex = 2;
@@ -121,7 +133,7 @@
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Enabled = false;
-            this.radioButton2.Location = new System.Drawing.Point(12, 63);
+            this.radioButton2.Location = new System.Drawing.Point(6, 55);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(91, 17);
             this.radioButton2.TabIndex = 3;
@@ -131,7 +143,7 @@
             // numericUpDown1
             // 
             this.numericUpDown1.Enabled = false;
-            this.numericUpDown1.Location = new System.Drawing.Point(109, 63);
+            this.numericUpDown1.Location = new System.Drawing.Point(103, 55);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(42, 20);
             this.numericUpDown1.TabIndex = 4;
@@ -143,15 +155,15 @@
             // 
             // folderLocation
             // 
-            this.folderLocation.Location = new System.Drawing.Point(11, 109);
+            this.folderLocation.Location = new System.Drawing.Point(11, 29);
             this.folderLocation.Name = "folderLocation";
             this.folderLocation.ReadOnly = true;
-            this.folderLocation.Size = new System.Drawing.Size(153, 20);
+            this.folderLocation.Size = new System.Drawing.Size(164, 20);
             this.folderLocation.TabIndex = 5;
             // 
             // browseButton
             // 
-            this.browseButton.Location = new System.Drawing.Point(170, 107);
+            this.browseButton.Location = new System.Drawing.Point(181, 27);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(30, 22);
             this.browseButton.TabIndex = 6;
@@ -165,7 +177,7 @@
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(11, 86);
+            this.checkBox1.Location = new System.Drawing.Point(11, 6);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(153, 17);
             this.checkBox1.TabIndex = 7;
@@ -176,7 +188,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 132);
+            this.label1.Location = new System.Drawing.Point(6, 85);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 13);
             this.label1.TabIndex = 8;
@@ -184,7 +196,7 @@
             // 
             // maxRecordLength
             // 
-            this.maxRecordLength.Location = new System.Drawing.Point(110, 130);
+            this.maxRecordLength.Location = new System.Drawing.Point(104, 83);
             this.maxRecordLength.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -196,7 +208,7 @@
             0,
             0});
             this.maxRecordLength.Name = "maxRecordLength";
-            this.maxRecordLength.Size = new System.Drawing.Size(54, 20);
+            this.maxRecordLength.Size = new System.Drawing.Size(41, 20);
             this.maxRecordLength.TabIndex = 9;
             this.maxRecordLength.Value = new decimal(new int[] {
             120,
@@ -210,7 +222,7 @@
             this.showNotifications.AutoSize = true;
             this.showNotifications.Checked = true;
             this.showNotifications.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showNotifications.Location = new System.Drawing.Point(12, 153);
+            this.showNotifications.Location = new System.Drawing.Point(6, 106);
             this.showNotifications.Name = "showNotifications";
             this.showNotifications.Size = new System.Drawing.Size(112, 17);
             this.showNotifications.TabIndex = 10;
@@ -219,7 +231,7 @@
             // 
             // openFolderButton
             // 
-            this.openFolderButton.Location = new System.Drawing.Point(221, 107);
+            this.openFolderButton.Location = new System.Drawing.Point(217, 27);
             this.openFolderButton.Name = "openFolderButton";
             this.openFolderButton.Size = new System.Drawing.Size(51, 22);
             this.openFolderButton.TabIndex = 11;
@@ -240,32 +252,115 @@
             this.recordToMp3.AutoSize = true;
             this.recordToMp3.Checked = true;
             this.recordToMp3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.recordToMp3.Location = new System.Drawing.Point(11, 176);
+            this.recordToMp3.Location = new System.Drawing.Point(5, 129);
             this.recordToMp3.Name = "recordToMp3";
             this.recordToMp3.Size = new System.Drawing.Size(96, 17);
             this.recordToMp3.TabIndex = 13;
             this.recordToMp3.Text = "Record to mp3";
             this.recordToMp3.UseVisualStyleBackColor = true;
             // 
+            // tabControl
+            // 
+            this.tabControl.Appearance = System.Windows.Forms.TabAppearance.Buttons;
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(282, 177);
+            this.tabControl.TabIndex = 14;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.hotkeyTextBox);
+            this.tabPage1.Controls.Add(this.btnChangeKeys);
+            this.tabPage1.Controls.Add(this.recordToMp3);
+            this.tabPage1.Controls.Add(this.radioButton1);
+            this.tabPage1.Controls.Add(this.radioButton2);
+            this.tabPage1.Controls.Add(this.numericUpDown1);
+            this.tabPage1.Controls.Add(this.showNotifications);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.maxRecordLength);
+            this.tabPage1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(274, 148);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "General";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.richTextBox1);
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Controls.Add(this.incrementNumber);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Controls.Add(this.saveFormat);
+            this.tabPage2.Controls.Add(this.checkBox1);
+            this.tabPage2.Controls.Add(this.folderLocation);
+            this.tabPage2.Controls.Add(this.browseButton);
+            this.tabPage2.Controls.Add(this.openFolderButton);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(274, 148);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Save Options";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(11, 94);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Size = new System.Drawing.Size(257, 32);
+            this.richTextBox1.TabIndex = 16;
+            this.richTextBox1.Text = "%y| %yy | %mo | %mon | %mon2 | %d | %h | %mi | %s | %ms | %pm | %w | %w2 | %i | %" +
+    "un | %uln | %cn";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(204, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Increment #";
+            // 
+            // incrementNumber
+            // 
+            this.incrementNumber.Location = new System.Drawing.Point(226, 69);
+            this.incrementNumber.Name = "incrementNumber";
+            this.incrementNumber.Size = new System.Drawing.Size(42, 20);
+            this.incrementNumber.TabIndex = 14;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(67, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Save Format";
+            // 
+            // saveFormat
+            // 
+            this.saveFormat.Location = new System.Drawing.Point(11, 68);
+            this.saveFormat.Name = "saveFormat";
+            this.saveFormat.Size = new System.Drawing.Size(209, 20);
+            this.saveFormat.TabIndex = 12;
+            this.saveFormat.Text = "%y-%mo-%d %h%mi%s QuickRecording";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 201);
-            this.Controls.Add(this.recordToMp3);
+            this.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.ClientSize = new System.Drawing.Size(282, 180);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.debugLabel);
-            this.Controls.Add(this.openFolderButton);
-            this.Controls.Add(this.showNotifications);
-            this.Controls.Add(this.maxRecordLength);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.browseButton);
-            this.Controls.Add(this.folderLocation);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
-            this.Controls.Add(this.hotkeyTextBox);
-            this.Controls.Add(this.btnChangeKeys);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -273,6 +368,12 @@
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRecordLength)).EndInit();
+            this.tabControl.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.incrementNumber)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,6 +400,14 @@
         private System.Windows.Forms.Button openFolderButton;
         private System.Windows.Forms.Label debugLabel;
         private System.Windows.Forms.CheckBox recordToMp3;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox saveFormat;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown incrementNumber;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
