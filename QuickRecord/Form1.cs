@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using NAudio.Wave;
-using NAudio.Lame;
 using Hotkeys;
 using System.Globalization;
 
@@ -21,9 +13,12 @@ namespace QuickRecord
         NAudio.Wave.WasapiLoopbackCapture sourceStream;
         NAudio.Lame.LameMP3FileWriter mp3Writer;
         NAudio.Wave.WaveFileWriter waveWriter;
-        Hotkeys.GlobalHotkey ghk;
-        bool recording;
-        string hotkeystring;
+        GlobalHotkey ghk;
+        bool recording = false;
+        string hotkeystring = "";
+        string path = "";
+        string filename = "";
+        string filetype = "";
         Timer timer;
 
         Keys modifierKeys;
@@ -71,15 +66,19 @@ namespace QuickRecord
         private void SaveSettings()
         {
             Properties.Settings.Default.modifierKeys = modifierKeys;
+
             Properties.Settings.Default.pressedKey = pressedKey;
 
             Properties.Settings.Default.showNotifications = showNotifications.Checked;
+
             Properties.Settings.Default.recordToMp3 = recordToMp3.Checked;
+
             Properties.Settings.Default.maxRecordLength = maxRecordLength.Value;
 
             Properties.Settings.Default.folderLocation = folderLocation.Text;
-            
+
             Properties.Settings.Default.saveFormat = saveFormat.Text;
+
             Properties.Settings.Default.incrementNumber = (int)incrementNumber.Value;
 
             Properties.Settings.Default.Save();
@@ -91,12 +90,18 @@ namespace QuickRecord
             {
                 sourceStream = new NAudio.Wave.WasapiLoopbackCapture();
                 sourceStream.DataAvailable += new EventHandler<NAudio.Wave.WaveInEventArgs>(sourceStream_DataAvailable);
-                string path = folderLocation.Text + "\\";
-                string filename = GetFileName();
+                path = folderLocation.Text + "\\";
+                filename = GetFileName();
                 if (recordToMp3.Checked)
-                    mp3Writer = new NAudio.Lame.LameMP3FileWriter(path + filename + ".mp3", sourceStream.WaveFormat, 128);
+                {
+                    filetype = ".mp3";
+                    mp3Writer = new NAudio.Lame.LameMP3FileWriter(filename + filetype, sourceStream.WaveFormat, 128);
+                }
                 else
-                    waveWriter = new NAudio.Wave.WaveFileWriter(path + filename+ ".wav", sourceStream.WaveFormat);
+                {
+                    filetype = ".wav";
+                    waveWriter = new NAudio.Wave.WaveFileWriter(filename + filetype, sourceStream.WaveFormat);
+                }
                 
                 sourceStream.StartRecording();
                 recording = true;
@@ -191,6 +196,8 @@ namespace QuickRecord
 
         private void StopRecording()
         {
+            
+
             sourceStream.StopRecording();
             sourceStream.Dispose();
             if (mp3Writer != null)
@@ -199,6 +206,9 @@ namespace QuickRecord
                 waveWriter.Dispose();
             recording = false;
             timer.Stop();
+
+            File.Move(filename + filetype, path + filename + filetype);
+
             notifyIcon.BalloonTipText = "Recording finished.";
             if (showNotifications.Checked)
                 notifyIcon.ShowBalloonTip(1000);
