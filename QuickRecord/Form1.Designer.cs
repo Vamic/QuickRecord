@@ -57,6 +57,7 @@
             this.incrementNumber = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.saveFormat = new System.Windows.Forms.TextBox();
+            this.labelFileName = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxRecordLength)).BeginInit();
@@ -80,7 +81,7 @@
             // 
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "QuickRecord v1.5";
+            this.notifyIcon.Text = "QuickRecord v1.5.1";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
@@ -293,6 +294,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.labelFileName);
             this.tabPage2.Controls.Add(this.richTextBox1);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Controls.Add(this.incrementNumber);
@@ -335,6 +337,7 @@
             this.incrementNumber.Name = "incrementNumber";
             this.incrementNumber.Size = new System.Drawing.Size(42, 20);
             this.incrementNumber.TabIndex = 14;
+            this.incrementNumber.ValueChanged += new System.EventHandler(this.incrementNumber_ValueChanged);
             // 
             // label2
             // 
@@ -352,6 +355,16 @@
             this.saveFormat.Size = new System.Drawing.Size(209, 20);
             this.saveFormat.TabIndex = 12;
             this.saveFormat.Text = "%y-%mo-%d %h%mi%s QuickRecording";
+            this.saveFormat.TextChanged += new System.EventHandler(this.saveFormat_TextChanged);
+            // 
+            // labelFileName
+            // 
+            this.labelFileName.AutoSize = true;
+            this.labelFileName.Location = new System.Drawing.Point(11, 129);
+            this.labelFileName.Name = "labelFileName";
+            this.labelFileName.Size = new System.Drawing.Size(45, 13);
+            this.labelFileName.TabIndex = 17;
+            this.labelFileName.Text = "Preview";
             // 
             // Form1
             // 
@@ -408,6 +421,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown incrementNumber;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Label labelFileName;
     }
 }
 

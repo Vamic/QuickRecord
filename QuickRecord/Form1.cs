@@ -31,6 +31,12 @@ namespace QuickRecord
             timer.Interval = 120000; //max recording of 120000ms (2 minutes)
             timer.Tick += new EventHandler(timer_Tick);
 
+            if (Properties.Settings.Default.upgradeRequired)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.upgradeRequired = false;
+            }
+
             //if untouched, set default values
             if (Properties.Settings.Default.unTouched)
             {
@@ -91,7 +97,7 @@ namespace QuickRecord
                 sourceStream = new NAudio.Wave.WasapiLoopbackCapture();
                 sourceStream.DataAvailable += new EventHandler<NAudio.Wave.WaveInEventArgs>(sourceStream_DataAvailable);
                 path = folderLocation.Text + "\\";
-                filename = GetFileName();
+                filename = GetFileName(false);
                 if (recordToMp3.Checked)
                 {
                     filetype = ".mp3";
@@ -118,7 +124,7 @@ namespace QuickRecord
             }
         }
 
-        private string GetFileName()
+        private string GetFileName(bool preview)
         {
             string filename = "";
             string format = saveFormat.Text;
@@ -168,7 +174,10 @@ namespace QuickRecord
             
             if (sb.ToString().Contains("%i"))
             {
-                incrementNumber.Value++;
+                if (!preview)
+                {
+                    incrementNumber.Value++;
+                }
                 sb.Replace("%i", incrementNumber.Value.ToString());
                 sb.Replace("%i", incrementNumber.Value.ToString());
             }
@@ -369,6 +378,17 @@ namespace QuickRecord
         private void button1_Click_1(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("explorer.exe", folderLocation.Text);
+        }
+
+        private void saveFormat_TextChanged(object sender, EventArgs e)
+        {
+            labelFileName.Text = GetFileName(true);
+            SaveSettings();
+        }
+
+        private void incrementNumber_ValueChanged(object sender, EventArgs e)
+        {
+            SaveSettings();
         }
         #endregion
     }
